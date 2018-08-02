@@ -35,10 +35,46 @@ function partition(array, start, end) {
 	return j;
 }
 
+function mSort(array) {
+	if(array.length <= 1) {
+		return array;
+	}
+	const middle = Math.floor(array.length/2);
+	let left = array.slice(0, middle);
+	let right = array.slice(middle, array.length);
+
+	left = mSort(left);
+	right = mSort(right);
+
+	return merge(left, right, array);
+}
+
+function merge(left, right, array) {
+	let leftIndex = 0;
+	let rightIndex = 0;
+	let index = 0;
+	while(leftIndex < left.length && rightIndex < right.length) {
+		if(left[leftIndex] < right[rightIndex]) {
+			array[index++] = left[leftIndex++];
+		} else {
+			array[index++] = right[rightIndex++];
+		}
+	}
+	
+	for(let i=leftIndex; i<left.length; i++) {
+		array[index++] = left[i];
+	}
+	for(let i=rightIndex; i<right.length; i++) {
+		array[index++] = right[i];
+	}
+	return array;
+}
+
 function main() {
-	console.log(...qSort(array));
-	console.log(`# of swaps: ${count}`);
-	console.log(`# of times partition called: ${partitionCount}`);
+	// console.log(...qSort(array));
+	// console.log(`# of swaps: ${count}`);
+	// console.log(`# of times partition called: ${partitionCount}`);
+	console.log(...mSort(array));
 }
 
 main();
